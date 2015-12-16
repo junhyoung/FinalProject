@@ -62,7 +62,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/category"
         android:spinnerMode="dropdown"
-        android:layout_above="@+id/editText"
+        android:layout_above="@+id/contents"
         android:layout_alignLeft="@+id/day"
         android:layout_alignStart="@+id/day" />
 
@@ -103,7 +103,9 @@
         android:id="@+id/cancle"
         android:onClick="cancle"
         android:layout_alignTop="@+id/save"
-        android:layout_alignRight="@+id/editText"
-        android:layout_alignEnd="@+id/editText" />
+        android:layout_toRightOf="@+id/day"
+        android:layout_toEndOf="@+id/day"
+        android:layout_marginLeft="39dp"
+        android:layout_marginStart="39dp" />
 
 </RelativeLayout>
