@@ -9,17 +9,24 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-public class InsertActivity extends AppCompatActivity {
+public class InsertActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     TextView logView;
+    ArrayList<String> arraylist;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,15 +34,49 @@ public class InsertActivity extends AppCompatActivity {
 
         logView = (TextView) findViewById(R.id.log);
         logView.setText("GPS 가 잡혀야 좌표가 구해짐");
+        TextView contents =(TextView)findViewById(R.id.contents);
         findlocate();
         findDay();
+        setCategory();
+
+
+    }
+
+    public void save(View v){
+       Toast.makeText(this,"저장 완료",Toast.LENGTH_SHORT).show();
+        finish();
+    }
+    public void cancle(View v){
+
+       Toast.makeText(this,"저장 안함",Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+    public void setCategory(){
+        arraylist = new ArrayList<String>();
+        arraylist.add("입력해주세요");
+        arraylist.add("공부");
+        arraylist.add("과제");
+        arraylist.add("식사");
+        arraylist.add("여가");
+        arraylist.add("친구");
+        arraylist.add("음주");
+        arraylist.add("취침");
+
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item, arraylist);
+        //스피너 속성
+        Spinner sp = (Spinner) this.findViewById(R.id.category);
+        sp.setPrompt("Category"); // 스피너 제목
+        sp.setAdapter(adapter);
+        sp.setOnItemSelectedListener(this);
 
 
     }
 
     public void findDay() {
         TextView day = (TextView) findViewById(R.id.day);
-        day.setText(+ Calendar.getInstance().get(Calendar.YEAR) +"." + (Calendar.getInstance().get(Calendar.MONTH) + 1) +"." + Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+        day.setText(+Calendar.getInstance().get(Calendar.YEAR) + "." + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "." + Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
 
     }
 
@@ -54,12 +95,9 @@ public class InsertActivity extends AppCompatActivity {
                     currentLocationAddress = address.get(0).getAddressLine(0).toString();
 
                     // 전송할 주소 데이터 (위도/경도 포함 편집)
-                    NumberFormat nf = NumberFormat.getInstance();
-                    nf.setMinimumFractionDigits(2);//소수점 아래 최소 자리수
-                    nf.setMaximumFractionDigits(2);//소수점 아래 최대자리수
                     bf.append(currentLocationAddress).append("\n");
-                    bf.append("lat:").append(nf.format(lat)).append("\n");
-                    bf.append("lng:").append(nf.format(lng));
+                    bf.append("lat:").append(lat).append("\n");
+                    bf.append("lng:").append(lng);
                 }
             }
 
@@ -118,5 +156,17 @@ public class InsertActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,
+                               long arg3) {
+        // TODO Auto-generated method stub
+        Toast.makeText(this, arraylist.get(arg2), Toast.LENGTH_LONG).show();//해당목차눌렸을때
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> arg0) {
+        // TODO Auto-generated method stub
+
+    }
 
 }
