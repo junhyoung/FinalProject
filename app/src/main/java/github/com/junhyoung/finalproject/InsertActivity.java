@@ -17,9 +17,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
-import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -77,8 +78,15 @@ public class InsertActivity extends AppCompatActivity implements AdapterView.OnI
 
     public void findDay() {
         TextView day = (TextView) findViewById(R.id.day);
-        day.setText(+Calendar.getInstance().get(Calendar.YEAR) + "." + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "." + Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+        long now = System.currentTimeMillis();// 현재 시간을 msec으로 구한다.
+        Date date = new Date(now);// 현재 시간을 저장 한다.
 
+        SimpleDateFormat CurYearFormat = new SimpleDateFormat("yyyy");
+        SimpleDateFormat CurMonthFormat = new SimpleDateFormat("MM");
+        SimpleDateFormat CurDayFormat = new SimpleDateFormat("dd");
+        SimpleDateFormat CurHourFormat = new SimpleDateFormat("HH");
+        SimpleDateFormat CurMinuteFormat = new SimpleDateFormat("mm");
+        day.setText(CurYearFormat.format(date) + "년 " + CurMonthFormat.format(date) + "월 " + CurDayFormat.format(date) +"일\n"+CurHourFormat.format(date)+"시 "+CurMinuteFormat.format(date)+"분");
     }
 
     private String findAddress(double lat, double lng) {
