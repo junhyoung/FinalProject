@@ -1,6 +1,7 @@
 package github.com.junhyoung.finalproject;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -27,25 +28,68 @@ import java.util.Locale;
 public class InsertActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     TextView logView;
+    TextView contents;
     ArrayList<String> arraylist;
+    SQLiteDatabase db;
+    String dbName = "savedb.db"; // db이름
+    String tableName="savetable";
+    int dbMode=Context.MODE_PRIVATE;
+
+    String date;
+    String time;
+    String category;
+    String event;
+    String locate;
+    double latitude,longtitude;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insert);
 
+        db = openOrCreateDatabase(dbName,dbMode,null); // db생성, 오픈
+        createTable();
         logView = (TextView) findViewById(R.id.log);
         logView.setText("GPS 가 잡혀야 좌표가 구해짐");
-        TextView contents =(TextView)findViewById(R.id.contents);
+        contents =(TextView)findViewById(R.id.contents);
         findlocate();
         findDay();
         setCategory();
 
 
     }
+    public boolean insertData(){
+        if(category=="입력해주세요") {
+            Toast toast=Toast.makeText(getApplicationContext(),"분야를 선택해 주세요",Toast.LENGTH_SHORT);
+            toast.show();
+            return false;
+        }
 
+        if(contents.getText().toString()==null)
+            event=category;
+        else
+            event=contents.getText().toString();;
+
+        String sql = "insert into " + tableName + " values(NULL, '" + locate+", "+latitude+", " +longtitude+", " +date+", " +time+", " +category+", " +event+ "');";
+
+        db.execSQL(sql);
+        return true;
+    }
+
+
+    public void createTable(){
+        try {
+            String sql = "create table " + tableName + "(id integer primary key autoincrement, " + "locate text not null,lat real, lng real, date text not null, time text not null, category text not null, event text not null)";
+            db.execSQL(sql);
+        } catch (android.database.sqlite.SQLiteException e) {
+            Log.d("Lab sqlite","error: "+ e);
+        }
+    }
     public void save(View v){
-       Toast.makeText(this,"저장 완료",Toast.LENGTH_SHORT).show();
-        finish();
+        if(insertData()) {
+            Toast.makeText(this, "저장 완료", Toast.LENGTH_SHORT).show();
+            finish();
+        }else{
+        }
     }
     public void cancle(View v){
 
@@ -86,7 +130,10 @@ public class InsertActivity extends AppCompatActivity implements AdapterView.OnI
         SimpleDateFormat CurDayFormat = new SimpleDateFormat("dd");
         SimpleDateFormat CurHourFormat = new SimpleDateFormat("HH");
         SimpleDateFormat CurMinuteFormat = new SimpleDateFormat("mm");
-        day.setText(CurYearFormat.format(date) + "년 " + CurMonthFormat.format(date) + "월 " + CurDayFormat.format(date) +"일\n"+CurHourFormat.format(date)+"시 "+CurMinuteFormat.format(date)+"분");
+        day.setText(CurYearFormat.format(date) + "년 " + CurMonthFormat.format(date) + "월 " + CurDayFormat.format(date) +"일\n"
+                +CurHourFormat.format(date)+"시 "+CurMinuteFormat.format(date)+"분");
+        time=CurHourFormat.format(date)+"시"+CurMinuteFormat.format(date)+"분";
+        this.date=CurYearFormat.format(date) + "년" + CurMonthFormat.format(date) + "월" + CurDayFormat.format(date) +"일";
     }
 
     private String findAddress(double lat, double lng) {
@@ -104,8 +151,9 @@ public class InsertActivity extends AppCompatActivity implements AdapterView.OnI
                     currentLocationAddress = address.get(0).getAddressLine(0).toString();
 
                     // 전송할 주소 데이터 (위도/경도 포함 편집)
-                    bf.append(currentLocationAddress).append("\n");
-                    bf.append("lat:").append(lat).append("\n");
+                    bf.append(currentLocationAddress);
+                    locate=bf.toString();
+                    bf.append("\n").append("lat:").append(lat).append("\n");
                     bf.append("lng:").append(lng);
                 }
             }
@@ -132,6 +180,8 @@ public class InsertActivity extends AppCompatActivity implements AdapterView.OnI
             public void onLocationChanged(Location location) {
                 double lat = location.getLatitude();
                 double lng = location.getLongitude();
+                longtitude=lng;
+                latitude=lat;
 
                 logView.setText(findAddress(lat,lng));
             }
@@ -161,6 +211,8 @@ public class InsertActivity extends AppCompatActivity implements AdapterView.OnI
             double lat = lastKnownLocation.getLatitude();
             Log.d("Main", "longtitude=" + lng + ", latitude=" + lat);
             logView.setText(findAddress(lat,lng));
+            longtitude=lng;
+            latitude=lat;
         }
 
     }
@@ -170,6 +222,7 @@ public class InsertActivity extends AppCompatActivity implements AdapterView.OnI
                                long arg3) {
         // TODO Auto-generated method stub
         Toast.makeText(this, arraylist.get(arg2), Toast.LENGTH_LONG).show();//해당목차눌렸을때
+        category=arraylist.get(arg2);
     }
 
     @Override
