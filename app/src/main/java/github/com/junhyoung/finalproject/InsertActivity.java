@@ -38,7 +38,7 @@ public class InsertActivity extends AppCompatActivity implements AdapterView.OnI
     String date;
     String time;
     String category;
-    String event;
+    String event="-1";
     String locate;
     double latitude=-1,longtitude=-1;
     @Override
@@ -76,13 +76,19 @@ public class InsertActivity extends AppCompatActivity implements AdapterView.OnI
             toast.show();
             return false;
         }
+        if(latitude==-1){
+            Toast toast=Toast.makeText(getApplicationContext(),"GPS 찾는중입니다.",Toast.LENGTH_SHORT);
+            toast.show();
+            return false;
+        }
 
-        if(contents.getText().toString()==null)
+
+        if(contents.getText().toString()=="-1")
             event=category;
         else
             event=contents.getText().toString();;
 
-        String sql = "insert into " + tableName + " values(NULL, '" + locate+", "+latitude+", " +longtitude+", " +date+", " +time+", " +category+", " +event+ "');";
+        String sql = "insert into " + tableName + " values(NULL, '" + locate+"'"+", "+latitude+", " +longtitude+", "+"'" +date+"'"+", "+"'" +time+"'"+", " +"'"+category+"'"+", " +"'"+event+ "');";
 
         db.execSQL(sql);
         return true;
