@@ -71,7 +71,7 @@ public class InsertActivity extends AppCompatActivity implements AdapterView.OnI
         }
     }
     public boolean insertData(){
-        if(category=="입력해주세요") {
+        if(category=="선택해주세요") {
             Toast toast=Toast.makeText(getApplicationContext(),"분야를 선택해 주세요",Toast.LENGTH_SHORT);
             toast.show();
             return false;
@@ -112,7 +112,7 @@ public class InsertActivity extends AppCompatActivity implements AdapterView.OnI
 
     public void setCategory(){
         arraylist = new ArrayList<String>();
-        arraylist.add("입력해주세요");
+        arraylist.add("선택해주세요");
         arraylist.add("공부");
         arraylist.add("과제");
         arraylist.add("식사");
