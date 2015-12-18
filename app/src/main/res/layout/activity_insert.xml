@@ -103,9 +103,17 @@
         android:id="@+id/cancle"
         android:onClick="cancle"
         android:layout_alignTop="@+id/save"
-        android:layout_toRightOf="@+id/day"
-        android:layout_toEndOf="@+id/day"
-        android:layout_marginLeft="39dp"
-        android:layout_marginStart="39dp" />
+        android:layout_alignRight="@+id/contents"
+        android:layout_alignEnd="@+id/contents" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="지도보기"
+        android:id="@+id/map"
+        android:onClick="map"
+        android:layout_above="@+id/day"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

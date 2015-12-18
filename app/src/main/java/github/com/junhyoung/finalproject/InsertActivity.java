@@ -1,6 +1,7 @@
 package github.com.junhyoung.finalproject;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Address;
 import android.location.Geocoder;
@@ -20,7 +21,6 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -40,7 +40,7 @@ public class InsertActivity extends AppCompatActivity implements AdapterView.OnI
     String category;
     String event;
     String locate;
-    double latitude,longtitude;
+    double latitude=-1,longtitude=-1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,13 +49,26 @@ public class InsertActivity extends AppCompatActivity implements AdapterView.OnI
         db = openOrCreateDatabase(dbName,dbMode,null); // db생성, 오픈
         createTable();
         logView = (TextView) findViewById(R.id.log);
-        logView.setText("GPS 가 잡혀야 좌표가 구해짐");
+        logView.setText("GPS 찾는 중!");
         contents =(TextView)findViewById(R.id.contents);
         findlocate();
         findDay();
         setCategory();
 
 
+    }
+
+    public void map(View v){
+        if(latitude==-1){
+            Toast toast=Toast.makeText(getApplicationContext(),"위치를 검색중 입니다!",Toast.LENGTH_SHORT);
+            toast.show();
+        }
+        else {
+            Intent intent = new Intent(getApplicationContext(), MapActivity.class);
+            intent.putExtra("lat", latitude);
+            intent.putExtra("lng", longtitude);
+            startActivity(intent);
+        }
     }
     public boolean insertData(){
         if(category=="입력해주세요") {
