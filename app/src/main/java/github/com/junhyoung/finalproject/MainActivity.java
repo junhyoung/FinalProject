@@ -20,5 +20,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(),StatisActivity.class);
         startActivity(intent);
     }
+    public void delete(View v){
+        Intent intent = new Intent(getApplicationContext(),DeleteActivity.class);
+        startActivity(intent);
+    }
 
 }

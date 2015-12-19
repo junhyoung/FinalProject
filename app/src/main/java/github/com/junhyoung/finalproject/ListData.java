@@ -10,5 +10,6 @@ public class ListData {
     public String mLocate;
     public String mEvent;
     public double lat,lng;
+    int id;
 
 }
