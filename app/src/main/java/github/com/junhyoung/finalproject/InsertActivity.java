@@ -25,7 +25,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class InsertActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class InsertActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener { //데이터 저장 액티비티
 
     TextView logView;
     TextView contents;
@@ -38,9 +38,9 @@ public class InsertActivity extends AppCompatActivity implements AdapterView.OnI
     String date;
     String time;
     String category;
-    String event="-1";
+    String event;
     String locate;
-    double latitude=-1,longtitude=-1;
+    double latitude=-1,longtitude=-1; // 좌표가 아직 안잡혔을때 -1값으로 초기화
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,9 +51,9 @@ public class InsertActivity extends AppCompatActivity implements AdapterView.OnI
         logView = (TextView) findViewById(R.id.log);
         logView.setText("GPS 찾는 중!");
         contents =(TextView)findViewById(R.id.contents);
-        findlocate();
-        findDay();
-        setCategory();
+        findlocate(); //위치 찾는 함수 호출
+        findDay(); //날짜 찾는 함수 호출
+        setCategory(); // 분야 스피너 설정
 
 
     }
@@ -64,7 +64,7 @@ public class InsertActivity extends AppCompatActivity implements AdapterView.OnI
             toast.show();
         }
         else { // 위도 경도를 넘겨주어 MapActivity 실행
-            Intent intent = new Intent(getApplicationContext(), MapActivity.class);
+            Intent intent = new Intent(getApplicationContext(), MapActivity.class); //INTENT로 MapActivity에 위도경도 전달
             intent.putExtra("lat", latitude);
             intent.putExtra("lng", longtitude);
             startActivity(intent);
@@ -83,13 +83,12 @@ public class InsertActivity extends AppCompatActivity implements AdapterView.OnI
         }
 
 
-        if(contents.getText().toString().equals("")) //세부 사건이 입력되지 않았을때 카테고리 입력
+        if(contents.getText().toString().equals("")) //세부 사건이 입력되지 않았을때 카테고리를 세부사건으로 입력
             event=category;
         else
             event=contents.getText().toString();;
 
         String sql = "insert into " + tableName + " values(NULL, '" + locate+"'"+", "+latitude+", " +longtitude+", "+"'" +date+"'"+", "+"'" +time+"'"+", " +"'"+category+"'"+", " +"'"+event+ "');"; //db 저장
-        Log.d("a",sql);
         db.execSQL(sql);
         return true;
     }
@@ -110,13 +109,12 @@ public class InsertActivity extends AppCompatActivity implements AdapterView.OnI
         }else{
         }
     }
-    public void cancle(View v){
-
+    public void cancle(View v){//BACK 버튼 클릭
        Toast.makeText(this,"저장 안함",Toast.LENGTH_SHORT).show();
         finish();
     }
 
-    public void setCategory(){
+    public void setCategory(){//스피너 설정
         arraylist = new ArrayList<String>();
         arraylist.add("선택해주세요");
         arraylist.add("공부");
@@ -139,23 +137,24 @@ public class InsertActivity extends AppCompatActivity implements AdapterView.OnI
 
     }
 
-    public void findDay() {
+    public void findDay() { //날짜 찾는 함수
         TextView day = (TextView) findViewById(R.id.day);
         long now = System.currentTimeMillis();// 현재 시간을 msec으로 구한다.
         Date date = new Date(now);// 현재 시간을 저장 한다.
 
-        SimpleDateFormat CurYearFormat = new SimpleDateFormat("yyyy");
-        SimpleDateFormat CurMonthFormat = new SimpleDateFormat("MM");
-        SimpleDateFormat CurDayFormat = new SimpleDateFormat("dd");
-        SimpleDateFormat CurHourFormat = new SimpleDateFormat("HH");
-        SimpleDateFormat CurMinuteFormat = new SimpleDateFormat("mm");
+        SimpleDateFormat CurYearFormat = new SimpleDateFormat("yyyy"); //yyyy형식으로 년도
+        SimpleDateFormat CurMonthFormat = new SimpleDateFormat("MM"); //MM형식으로 월
+        SimpleDateFormat CurDayFormat = new SimpleDateFormat("dd"); //dd형식으로 일
+        SimpleDateFormat CurHourFormat = new SimpleDateFormat("HH"); //HH형식으로 시간
+        SimpleDateFormat CurMinuteFormat = new SimpleDateFormat("mm"); //mm형식으로 분
         day.setText(CurYearFormat.format(date) + "년 " + CurMonthFormat.format(date) + "월 " + CurDayFormat.format(date) +"일\n"
                 +CurHourFormat.format(date)+"시 "+CurMinuteFormat.format(date)+"분");
+
         time=CurHourFormat.format(date)+"시"+CurMinuteFormat.format(date)+"분";
         this.date=CurYearFormat.format(date) + "년" + CurMonthFormat.format(date) + "월" + CurDayFormat.format(date) +"일";
     }
 
-    private String findAddress(double lat, double lng) {
+    private String findAddress(double lat, double lng) { //위도경도로 주소값 반환
         StringBuffer bf = new StringBuffer();
         Geocoder geocoder = new Geocoder(this, Locale.KOREA);
         List<Address> address;
@@ -183,7 +182,7 @@ public class InsertActivity extends AppCompatActivity implements AdapterView.OnI
         return bf.toString();
     }
 
-    public void findlocate(){
+    public void findlocate(){ //위도 경도 구해주는 함수
         // Acquire a reference to the system Location Manager
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
@@ -220,17 +219,10 @@ public class InsertActivity extends AppCompatActivity implements AdapterView.OnI
         // Register the listener with the Location Manager to receive location updates
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-
-        // 수동으로 위치 구하기
-        String locationProvider = LocationManager.GPS_PROVIDER;
-        Location lastKnownLocation = locationManager.getLastKnownLocation(locationProvider);
-
-        
-
     }
 
     @Override
-    public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,
+    public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, //스피너가 설정되었을때 함수
                                long arg3) {
         // TODO Auto-generated method stub
         Toast.makeText(this, arraylist.get(arg2), Toast.LENGTH_LONG).show();//해당목차눌렸을때

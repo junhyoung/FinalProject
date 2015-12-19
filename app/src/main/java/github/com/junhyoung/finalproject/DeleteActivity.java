@@ -36,35 +36,36 @@ public class DeleteActivity extends AppCompatActivity {
         mAdapter=new ListViewAdapter(this);
         mListView.setAdapter(mAdapter);
         db = openOrCreateDatabase(dbName,dbMode,null);
-        builder=new AlertDialog.Builder(this);
-        readAllDb();
+        createTable();
+        builder=new AlertDialog.Builder(this); //확인창 을 위한 변수
+        readAllDb(); //데이터를 모두 읽어옴
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() { //customListView 의 객체를 클릭시 MapActivity로 연결하여 지도 출력
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {//커스텀리스트뷰의 아이템이 클릭되면
                 ListData mdata = mAdapter.mListData.get(position);
-                checkDelete(mdata);
+                checkDelete(mdata); //선택된 데이터를 지우기위한 함수 호출
             }
         });
     }
-    public void checkDelete(final ListData mdata){
+    public void checkDelete(final ListData mdata){ //선택된 데이터 지우기위해 확인창을 띄우는 함수
         // 여기서 부터는 알림창의 속성 설정
         builder.setTitle("정말 삭제하시겠습니까?")        // 제목 설정
                 .setMessage(mdata.mDate+mdata.mTime+"에\n"+mdata.mLocate+"에서\n"+mdata.mEvent+"한 일을 삭제 하시겠습니까?")        // 메세지 설정
                 .setCancelable(false)        // 뒤로 버튼 클릭시 취소 가능 설정
                 .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                     // 확인 버튼 클릭시 설정
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        deleteData(mdata);
-                        mAdapter.clear();
-                        readAllDb();
-                        mAdapter.notifyDataSetChanged();
+                    public void onClick(DialogInterface dialog, int whichButton) { //확인 클릭시
+                        deleteData(mdata); // 삭제 함수 호출
+                        mAdapter.clear(); // 리스트뷰 초기화
+                        readAllDb(); //삭제후 DB 출력
+                        mAdapter.notifyDataSetChanged(); // 리스트뷰 출력
                     }
                 })
                 .setNegativeButton("취소", new DialogInterface.OnClickListener() {
                     // 취소 버튼 클릭시 설정
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        dialog.cancel();
+                        dialog.cancel(); //삭제 취소
                     }
                 });
 
@@ -72,13 +73,13 @@ public class DeleteActivity extends AppCompatActivity {
         dialog.show();    // 알림창 띄우기
     }
 
-    public void deleteData(ListData mdata){
+    public void deleteData(ListData mdata){ //삭제함수
         String sql = "delete from " + tableName + " where id = " + mdata.id + ";";
         db.execSQL(sql);
 
     }
 
-    private class ViewHolder{ //customlistview 를 위한 객체
+    private class ViewHolder{ //customlistview의 내용
         public TextView mDate;
         public TextView mTime;
         public TextView mLocate;
@@ -106,7 +107,7 @@ public class DeleteActivity extends AppCompatActivity {
             return position;
         }
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(int position, View convertView, ViewGroup parent) { //각 리스트의 내용설정
             ViewHolder holder;
             if (convertView == null) {
                 holder = new ViewHolder();
@@ -130,7 +131,7 @@ public class DeleteActivity extends AppCompatActivity {
             holder.mEvent.setText(mData.mEvent);
             return convertView;
         }
-        public void addItem(String date,String time, String locate,String Event,double latitude, double longtitude,int id){
+        public void addItem(String date,String time, String locate,String Event,double latitude, double longtitude,int id){ //리스트뷰에 데이터 추가
             ListData addInfo = null;
             addInfo=new ListData();
             addInfo.mDate=date;
@@ -144,10 +145,10 @@ public class DeleteActivity extends AppCompatActivity {
         }
         public void clear(){
             mListData.clear();
-        }
+        } // 리스트 초기화
     }
 
-    public void createTable(){
+    public void createTable(){ // DB의 테이블이 없을시 호출
         try {
             String sql = "create table " + tableName + "(id integer primary key autoincrement, locate text not null,lat real, lng real, date text not null, time text not null, category text not null, event text not null)";
             db.execSQL(sql);
@@ -155,7 +156,7 @@ public class DeleteActivity extends AppCompatActivity {
             Log.d("Lab sqlite", "error: " + e);
         }
     }
-    public void readAllDb(){
+    public void readAllDb(){ // Db에서 데이터 읽어옴
         String sql = "select * from " + tableName + " order by id DESC ;";
         Cursor result = db.rawQuery(sql, null);
         result.moveToFirst();

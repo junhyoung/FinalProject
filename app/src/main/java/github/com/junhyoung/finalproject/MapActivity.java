@@ -14,7 +14,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapActivity extends Activity {
+public class MapActivity extends Activity { //구글 맵 API 액티비티
 
     LatLng locate ;
     private GoogleMap map;
@@ -36,6 +36,6 @@ public class MapActivity extends Activity {
     }
     public void back(View v){
         finish();
-    }
+    } // BACK버튼 클릭
 
 }

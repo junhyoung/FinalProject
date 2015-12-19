@@ -12,15 +12,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
-    public void insert(View v){
+    public void insert(View v){ // 저장액티비티 호출
         Intent intent = new Intent(getApplicationContext(),InsertActivity.class);
         startActivity(intent);
     }
-    public void statis(View v){
+    public void statis(View v){ // 통계액티비티 호출
         Intent intent = new Intent(getApplicationContext(),StatisActivity.class);
         startActivity(intent);
     }
-    public void delete(View v){
+    public void delete(View v){ // 삭제액티비티 호출
         Intent intent = new Intent(getApplicationContext(),DeleteActivity.class);
         startActivity(intent);
     }
