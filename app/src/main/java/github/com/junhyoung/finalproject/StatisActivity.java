@@ -29,6 +29,7 @@ public class StatisActivity extends AppCompatActivity  implements AdapterView.On
     int dbMode = Context.MODE_PRIVATE;
     private ListView mListView = null;
     private ListViewAdapter mAdapter = null;
+    TextView num1,num2,num3,num4,num5,num6,num7,num8;
 
     TextView test;
     @Override
@@ -41,6 +42,14 @@ public class StatisActivity extends AppCompatActivity  implements AdapterView.On
         mAdapter=new ListViewAdapter(this);
         mListView.setAdapter(mAdapter);
         db = openOrCreateDatabase(dbName,dbMode,null);
+        num1=(TextView)findViewById(R.id.num1);
+        num2=(TextView)findViewById(R.id.num2);
+        num3=(TextView)findViewById(R.id.num3);
+        num4=(TextView)findViewById(R.id.num4);
+        num5=(TextView)findViewById(R.id.num5);
+        num6=(TextView)findViewById(R.id.num6);
+        num7=(TextView)findViewById(R.id.num7);
+        num8=(TextView)findViewById(R.id.num8);
         createTable();
         setCategory();
         readAllDb();
@@ -135,7 +144,9 @@ public class StatisActivity extends AppCompatActivity  implements AdapterView.On
         }
     }
     public void readAllDb(){
-        String sql = "select * from " + tableName + ";";
+        int count[]=new int[8];
+        String temp="";
+        String sql = "select * from " + tableName + " order by id DESC ;";
         Cursor result = db.rawQuery(sql, null);
         result.moveToFirst();
         mAdapter.clear();
@@ -146,30 +157,67 @@ public class StatisActivity extends AppCompatActivity  implements AdapterView.On
             String time = result.getString(5);
             String event = result.getString(7);
             String category=result.getString(6);
-            Log.d("",locate+date+time+event+category);
+            Log.d("", locate + date + time + event + category);
+            switch(Integer.parseInt(time.substring(0,2))){
+                case 0:case 1:case 2: count[0]++;break;
+                case 3:case 4:case 5: count[1]++;break;
+                case 6:case 7:case 8: count[2]++;break;
+                case 9:case 10:case 11: count[3]++;break;
+                case 12:case 13:case 14: count[4]++;break;
+                case 15:case 16:case 17: count[5]++;break;
+                case 18:case 19:case 20: count[6]++;break;
+                case 21:case 22:case 23: count[7]++;break;
+            }
             mAdapter.addItem(date, time, locate, event, Double.parseDouble(result.getString(2)), Double.parseDouble(result.getString(3)));
             result.moveToNext();
         }
+        num1.setText("    "+count[0]);
+        num2.setText("    "+count[1]);
+        num3.setText("    "+count[2]);
+        num4.setText("    "+count[3]);
+        num5.setText("    "+count[4]);
+        num6.setText("    "+count[5]);
+        num7.setText("    " + count[6]);
+        num8.setText("    " + count[7]);
+
         result.close();
     }
 
     public void readDB(String category){
+        int count[]=new int[8];
+        String temp="";
         try {
-            String sql = "select * from " + tableName + " where category = '" + category + "';";
+            String sql = "select * from " + tableName + " where category = '" + category + "' order by id DESC ;";
             Cursor result = db.rawQuery(sql, null);
 
             result.moveToFirst();
 
             while (!result.isAfterLast()) {
-
                 String locate = result.getString(1);
                 String date = result.getString(4);
                 String time = result.getString(5);
                 String event = result.getString(7);
-                Log.d("",locate+date+time+event);
+                switch(Integer.parseInt(time.substring(0,2))){
+                    case 0:case 1:case 2: count[0]++;break;
+                    case 3:case 4:case 5: count[1]++;break;
+                    case 6:case 7:case 8: count[2]++;break;
+                    case 9:case 10:case 11: count[3]++;break;
+                    case 12:case 13:case 14: count[4]++;break;
+                    case 15:case 16:case 17: count[5]++;break;
+                    case 18:case 19:case 20: count[6]++;break;
+                    case 21:case 22:case 23: count[7]++;break;
+                }
                 mAdapter.addItem(date, time, locate, event, Double.parseDouble(result.getString(2)), Double.parseDouble(result.getString(3)));
                 result.moveToNext();
             }
+            num1.setText("    "+count[0]);
+            num2.setText("    "+count[1]);
+            num3.setText("    "+count[2]);
+            num4.setText("    "+count[3]);
+            num5.setText("    "+count[4]);
+            num6.setText("    "+count[5]);
+            num7.setText("    "+count[6]);
+            num8.setText("    "+count[7]);
             result.close();
         }catch (Exception e){
             Toast toast=Toast.makeText(getApplicationContext(),category+"분야의 데이터가 없습니다.",Toast.LENGTH_SHORT);
@@ -203,8 +251,7 @@ public class StatisActivity extends AppCompatActivity  implements AdapterView.On
     }
 
     @Override
-    public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,
-                               long arg3) {
+    public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
         // TODO Auto-generated method stub
         Toast.makeText(this, arraylist.get(arg2), Toast.LENGTH_LONG).show();//해당목차눌렸을때
 
