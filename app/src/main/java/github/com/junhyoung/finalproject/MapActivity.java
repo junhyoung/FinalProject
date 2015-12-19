@@ -25,7 +25,7 @@ public class MapActivity extends Activity {
         setContentView(R.layout.activity_map);
         Intent intent=getIntent();
         Drawable alpha = ((ImageView)findViewById(R.id.back)).getDrawable();
-        alpha.setAlpha(80);
+        alpha.setAlpha(180);
         locate=new LatLng(intent.getExtras().getDouble("lat"),intent.getExtras().getDouble("lng"));
         map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
         Marker marker = map.addMarker(new MarkerOptions().position(locate).title("Here I am!"));

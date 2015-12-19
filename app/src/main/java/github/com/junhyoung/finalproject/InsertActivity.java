@@ -225,14 +225,7 @@ public class InsertActivity extends AppCompatActivity implements AdapterView.OnI
         String locationProvider = LocationManager.GPS_PROVIDER;
         Location lastKnownLocation = locationManager.getLastKnownLocation(locationProvider);
 
-        if (lastKnownLocation != null) {
-            double lng = lastKnownLocation.getLatitude();
-            double lat = lastKnownLocation.getLatitude();
-            Log.d("Main", "longtitude=" + lng + ", latitude=" + lat);
-            logView.setText(findAddress(lat,lng));
-            longtitude=lng;
-            latitude=lat;
-        }
+        
 
     }
 

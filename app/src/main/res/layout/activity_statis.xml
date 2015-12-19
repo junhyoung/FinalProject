@@ -174,10 +174,10 @@
         android:layout_height="wrap_content"
         android:text="분야"
         android:id="@+id/textView2"
+        android:layout_above="@+id/chart"
         android:layout_alignRight="@+id/chart"
         android:layout_alignEnd="@+id/chart"
-        android:layout_above="@+id/chart"
-        android:layout_alignTop="@+id/category" />
+        android:layout_alignParentTop="true" />
 
 
 </RelativeLayout>

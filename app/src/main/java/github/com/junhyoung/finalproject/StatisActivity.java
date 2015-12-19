@@ -171,14 +171,14 @@ public class StatisActivity extends AppCompatActivity  implements AdapterView.On
             mAdapter.addItem(date, time, locate, event, Double.parseDouble(result.getString(2)), Double.parseDouble(result.getString(3)));
             result.moveToNext();
         }
-        num1.setText("    "+count[0]);
-        num2.setText("    "+count[1]);
-        num3.setText("    "+count[2]);
-        num4.setText("    "+count[3]);
-        num5.setText("    "+count[4]);
-        num6.setText("    "+count[5]);
-        num7.setText("    " + count[6]);
-        num8.setText("    " + count[7]);
+        num1.setText("    "+count[0]+" 회");
+        num2.setText("    "+count[1]+" 회");
+        num3.setText("    "+count[2]+" 회");
+        num4.setText("    "+count[3]+" 회");
+        num5.setText("    "+count[4]+" 회");
+        num6.setText("    "+count[5]+" 회");
+        num7.setText("    " + count[6]+" 회");
+        num8.setText("    " + count[7]+" 회");
 
         result.close();
     }
@@ -210,14 +210,14 @@ public class StatisActivity extends AppCompatActivity  implements AdapterView.On
                 mAdapter.addItem(date, time, locate, event, Double.parseDouble(result.getString(2)), Double.parseDouble(result.getString(3)));
                 result.moveToNext();
             }
-            num1.setText("    "+count[0]);
-            num2.setText("    "+count[1]);
-            num3.setText("    "+count[2]);
-            num4.setText("    "+count[3]);
-            num5.setText("    "+count[4]);
-            num6.setText("    "+count[5]);
-            num7.setText("    "+count[6]);
-            num8.setText("    "+count[7]);
+            num1.setText("    "+count[0]+" 회");
+            num2.setText("    "+count[1]+" 회");
+            num3.setText("    "+count[2]+" 회");
+            num4.setText("    "+count[3]+" 회");
+            num5.setText("    "+count[4]+" 회");
+            num6.setText("    "+count[5]+" 회");
+            num7.setText("    "+count[6]+" 회");
+            num8.setText("    "+count[7]+" 회");
             result.close();
         }catch (Exception e){
             Toast toast=Toast.makeText(getApplicationContext(),category+"분야의 데이터가 없습니다.",Toast.LENGTH_SHORT);
