@@ -83,13 +83,13 @@ public class InsertActivity extends AppCompatActivity implements AdapterView.OnI
         }
 
 
-        if(contents.getText().toString()=="-1")
+        if(contents.getText().toString().equals(""))
             event=category;
         else
             event=contents.getText().toString();;
 
         String sql = "insert into " + tableName + " values(NULL, '" + locate+"'"+", "+latitude+", " +longtitude+", "+"'" +date+"'"+", "+"'" +time+"'"+", " +"'"+category+"'"+", " +"'"+event+ "');";
-
+        Log.d("a",sql);
         db.execSQL(sql);
         return true;
     }
