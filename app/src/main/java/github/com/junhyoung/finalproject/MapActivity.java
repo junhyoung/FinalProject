@@ -2,9 +2,10 @@ package github.com.junhyoung.finalproject;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.ImageView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -23,6 +24,8 @@ public class MapActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         Intent intent=getIntent();
+        Drawable alpha = ((ImageView)findViewById(R.id.back)).getDrawable();
+        alpha.setAlpha(80);
         locate=new LatLng(intent.getExtras().getDouble("lat"),intent.getExtras().getDouble("lng"));
         map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
         Marker marker = map.addMarker(new MarkerOptions().position(locate).title("Here I am!"));
@@ -32,7 +35,6 @@ public class MapActivity extends Activity {
         map.animateCamera(CameraUpdateFactory.zoomTo(16), 2000, null);
     }
     public void back(View v){
-        Toast toast;
         finish();
     }
 
