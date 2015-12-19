@@ -6,31 +6,41 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="15dp">
 
         <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:text="15.12.12"
-        android:id="@+id/date" />
+            android:layout_width="wrap_content"
+            android:layout_height="15dp"
+            android:text="15.12.12"
+            android:textSize="5pt"
+            android:id="@+id/date" />
         <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:text="  15:02"
-        android:id="@+id/time" />
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:text="  15:02"
+            android:textSize="5pt"
+            android:id="@+id/time" />
 
+       </LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="15dp">
         <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:text="  서울특별시 관악구 난곡동 610-33번지"
-        android:id="@+id/locate" />
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:textSize="5pt"
+            android:text="  서울특별시 관악구 난곡동 610-33번지"
+            android:id="@+id/locate" />
     </LinearLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="EVENT ~~~~~~~~~~~~~~~~~~~~~~"
-        android:id="@+id/event"
-        android:layout_weight="0.00" />
-
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="15dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:text="EVENT ~~~~~~~~~~~~~~~~~~~~~~"
+                android:textSize="5pt"
+                android:id="@+id/event"
+                android:layout_weight="0.00" />
+        </LinearLayout>
 </LinearLayout>

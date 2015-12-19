@@ -181,6 +181,7 @@ public class StatisActivity extends AppCompatActivity  implements AdapterView.On
 
     public void setCategory(){
         arraylist = new ArrayList<String>();
+        arraylist.add("전체");
         arraylist.add("공부");
         arraylist.add("과제");
         arraylist.add("식사");
@@ -207,10 +208,15 @@ public class StatisActivity extends AppCompatActivity  implements AdapterView.On
         // TODO Auto-generated method stub
         Toast.makeText(this, arraylist.get(arg2), Toast.LENGTH_LONG).show();//해당목차눌렸을때
 
-        mAdapter.clear();
-        readDB(arraylist.get(arg2));
-        mAdapter.notifyDataSetChanged();
-
+        if(arraylist.get(arg2)=="전체"){
+            mAdapter.clear();
+            readAllDb();
+            mAdapter.notifyDataSetChanged();
+        }else {
+            mAdapter.clear();
+            readDB(arraylist.get(arg2));
+            mAdapter.notifyDataSetChanged();
+        }
 
     }
 

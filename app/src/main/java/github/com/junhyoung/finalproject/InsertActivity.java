@@ -32,7 +32,7 @@ public class InsertActivity extends AppCompatActivity implements AdapterView.OnI
     ArrayList<String> arraylist;
     SQLiteDatabase db;
     String dbName = "savedb.db"; // db이름
-    String tableName="savetable";
+    String tableName="savetable"; // table 이름
     int dbMode=Context.MODE_PRIVATE;
 
     String date;
@@ -58,44 +58,44 @@ public class InsertActivity extends AppCompatActivity implements AdapterView.OnI
 
     }
 
-    public void map(View v){
-        if(latitude==-1){
+    public void map(View v){ // 지도보기 버튼 클릭시
+        if(latitude==-1){ //gps 가 아직 잡히지 않았을때
             Toast toast=Toast.makeText(getApplicationContext(),"위치를 검색중 입니다!",Toast.LENGTH_SHORT);
             toast.show();
         }
-        else {
+        else { // 위도 경도를 넘겨주어 MapActivity 실행
             Intent intent = new Intent(getApplicationContext(), MapActivity.class);
             intent.putExtra("lat", latitude);
             intent.putExtra("lng", longtitude);
             startActivity(intent);
         }
     }
-    public boolean insertData(){
-        if(category=="선택해주세요") {
+    public boolean insertData(){ // insert SQLite 실행
+        if(category=="선택해주세요") { //분야 미선택시
             Toast toast=Toast.makeText(getApplicationContext(),"분야를 선택해 주세요",Toast.LENGTH_SHORT);
             toast.show();
             return false;
         }
-        if(latitude==-1){
+        if(latitude==-1){ // GPS 좌표가 잡히지 않았을시
             Toast toast=Toast.makeText(getApplicationContext(),"GPS 찾는중입니다.",Toast.LENGTH_SHORT);
             toast.show();
             return false;
         }
 
 
-        if(contents.getText().toString().equals(""))
+        if(contents.getText().toString().equals("")) //세부 사건이 입력되지 않았을때 카테고리 입력
             event=category;
         else
             event=contents.getText().toString();;
 
-        String sql = "insert into " + tableName + " values(NULL, '" + locate+"'"+", "+latitude+", " +longtitude+", "+"'" +date+"'"+", "+"'" +time+"'"+", " +"'"+category+"'"+", " +"'"+event+ "');";
+        String sql = "insert into " + tableName + " values(NULL, '" + locate+"'"+", "+latitude+", " +longtitude+", "+"'" +date+"'"+", "+"'" +time+"'"+", " +"'"+category+"'"+", " +"'"+event+ "');"; //db 저장
         Log.d("a",sql);
         db.execSQL(sql);
         return true;
     }
 
 
-    public void createTable(){
+    public void createTable(){ //DB의 Table이 없을때 table 생성
         try {
             String sql = "create table " + tableName + "(id integer primary key autoincrement, " + "locate text not null,lat real, lng real, date text not null, time text not null, category text not null, event text not null)";
             db.execSQL(sql);
@@ -103,8 +103,8 @@ public class InsertActivity extends AppCompatActivity implements AdapterView.OnI
             Log.d("Lab sqlite","error: "+ e);
         }
     }
-    public void save(View v){
-        if(insertData()) {
+    public void save(View v){ //저장 버튼이 눌렸을때 OnclickHandler
+        if(insertData()) { // 저장이 성공적으로 되었을때 종료
             Toast.makeText(this, "저장 완료", Toast.LENGTH_SHORT).show();
             finish();
         }else{
